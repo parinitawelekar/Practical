@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Responsive Webpage Practical 9</title>
+
+    <link href="pp9.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="pp9.css">
+<style>
+  body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f2f2f2;
+        }
+        header {
+            background: red;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        nav {
+            background: red;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: yellow;
+        }
+        .container {
+            column-count: 3;
+            column-gap: 20px;
+            padding: 20px;
+        }
+        .box {
+            background: white;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+            transition: transform 0.5s;
+        }
+        .box:hover {
+            transform: scale(1.05);
+        }
+        .icon {
+            font-size: 30px;
+            color: #0077b6;
+        }
+        @keyframes moveBox {
+            from {
+                transform: translateX(0px);
+            }
+
+            to {
+                transform: translateX(50px);
+            }
+        }
+        .animate {
+            animation: moveBox 2s infinite alternate;
+        }
+        footer {
+            background: #0077b6;
+            color: grey;
+            text-align: center;
+            padding: 10px;
+        }
+        @media(max-width:768px) {
+
+            .container {
+                column-count: 1;
+            }
+        }
+</style>
+</head>
+<body>
+
+    <header>
+        <h1>Practical 9</h1>
+        <h3>Name: Parinita Welekar</h3>
+        <h3>USN:CS25159</h3>
+        <hr>
+        <h1>Responsive Webpage</h1>
+    </header>
+    <nav>
+        <a href="#" target="_blank">Home</a>
+        <a href="#" title="About Section">About</a>
+        <a href="#" title="Services Section">Services</a>
+        <a href="#" title="Contact Section">Contact</a>
+    </nav>
+    <div class="container">
+        <div class="box animate">
+            <i class="fa-solid fa-laptop icon"></i>
+            <h3>Web Design</h3>
+            <p>
+                Web designing involves creating beautiful and responsive webpages
+                using HTML and CSS.
+            </p>
+        </div>
+        <div class="box">
+            <i class="fa-solid fa-code icon"></i>
+            <h3>Programming</h3>
+            <p>
+                Programming helps to build logic-based applications using
+                different languages.
+            </p>
+        </div>
+        <div class="box">
+            <i class="fa-solid fa-mobile-screen icon"></i>
+            <h3>Responsive Layout</h3>
+            <p>
+                Responsive layout adjusts automatically according to screen size
+                using media queries.
+            </p>
+        </div>
+    </div>
+    <footer>
+        <p>
+            Web Designing Practical 9
+        </p>
+    </footer>
+</body>
+</html>
