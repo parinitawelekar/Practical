@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML5 APIs Demo - Better Pink Theme</title>
+
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#111827,#1f2937,#0f172a);
+    min-height:100vh;
+    padding:30px;
+    text-align:center;
+}
+
+h1{
+    color:#10b981;
+    margin-bottom:25px;
+    font-size:38px;
+    text-shadow:0 0 10px rgba(16,185,129,0.4);
+}
+
+.container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+}
+
+.card{
+    width:340px;
+    background:rgba(31,41,55,0.95);
+    border:1px solid #374151;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 0 20px rgba(16,185,129,0.25);
+}
+
+h2{
+    color:#10b981;
+    margin-bottom:15px;
+}
+
+button{
+    padding:10px 16px;
+    border:none;
+    border-radius:8px;
+    background:#10b981;
+    color:white;
+    cursor:pointer;
+    margin-top:10px;
+    font-size:15px;
+}
+
+button:hover{
+    background:#059669;
+}
+
+.drag-item{
+    background:#10b981;
+    color:white;
+    padding:10px;
+    margin:8px 0;
+    border-radius:8px;
+    cursor:grab;
+}
+
+#dropArea{
+    border:2px dashed #10b981;
+    height:140px;
+    line-height:140px;
+    margin-top:12px;
+    border-radius:10px;
+    background:#111827;
+    font-weight:bold;
+    color:#10b981;
+}
+
+input{
+    width:90%;
+    padding:10px;
+    border:1px solid #4b5563;
+    border-radius:8px;
+    margin:8px 0;
+    background:#111827;
+    color:white;
+}
+
+input::placeholder{
+    color:#9ca3af;
+}
+
+iframe{
+    width:100%;
+    height:180px;
+    border:none;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+ul{
+    text-align:left;
+    margin-top:10px;
+    padding-left:20px;
+}
+
+li{
+    margin:6px 0;
+    color:#d1d5db;
+}
+
+p{
+    margin-top:10px;
+    color:#d1d5db;
+}
+
+@media(max-width:768px){
+    .card{
+        width:100%;
+        max-width:360px;
+    }
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1>🎮 HTML5 APIs Demo</h1>
+
+<div class="container">
+
+<!-- Drag Drop -->
+<div class="card">
+<h2>Drag & Drop</h2>
+
+<div id="item1" class="drag-item" draggable="true"
+ondragstart="drag(event)">Item 1</div>
+
+<div id="item2" class="drag-item" draggable="true"
+ondragstart="drag(event)">Item 2</div>
+
+<div id="dropArea"
+ondrop="drop(event)"
+ondragover="allowDrop(event)">
+Drop Here
+</div>
+
+<p id="count">Items Dropped: 0</p>
+<button onclick="resetDrop()">Reset</button>
+</div>
+
+<!-- Geolocation -->
+<div class="card">
+<h2>Geolocation</h2>
+<button onclick="getLocation()">Get Location</button>
+<p id="location">Click button to detect location</p>
+<iframe id="map"></iframe>
+</div>
+
+<!-- Web Storage -->
+<div class="card">
+<h2>Web Storage</h2>
+
+<input type="text" id="task" placeholder="Enter task">
+<button onclick="saveTask()">Save</button>
+
+<ul id="taskList"></ul>
+
+<button onclick="clearTasks()">Clear All</button>
+</div>
+
+</div>
+
+<script>
+let dropped = 0;
+
+function allowDrop(ev){
+    ev.preventDefault();
+}
+
+function drag(ev){
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev){
+    ev.preventDefault();
+    let data = ev.dataTransfer.getData("text");
+    let item = document.getElementById(data);
+    ev.target.appendChild(item);
+    dropped++;
+    document.getElementById("count").innerHTML =
+    "Items Dropped: " + dropped;
+}
+
+function resetDrop(){
+    location.reload();
+}
+
+function getLocation(){
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }else{
+        document.getElementById("location").innerHTML =
+        "Geolocation not supported.";
+    }
+}
+
+function showPosition(position){
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
+
+    document.getElementById("location").innerHTML =
+    "Latitude: " + lat + "<br>Longitude: " + lon;
+
+    document.getElementById("map").src =
+    "https://maps.google.com/maps?q=" +
+    lat + "," + lon + "&z=15&output=embed";
+}
+
+function saveTask(){
+    let task = document.getElementById("task").value;
+
+    if(task=="") return;
+
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.push(task);
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    document.getElementById("task").value = "";
+    showTasks();
+}
+
+function showTasks(){
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || "";
+
+    let list = document.getElementById("taskList");
+    list.innerHTML = "";
+
+    tasks.forEach(function(item){
+        list.innerHTML += "<li>" + item + "</li>";
+    });
+}
+
+function clearTasks(){
+    localStorage.removeItem("tasks");
+    showTasks();
+}
+
+showTasks();
+</script>
+
+</body>
+</html>
